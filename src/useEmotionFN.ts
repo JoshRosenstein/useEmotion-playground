@@ -1,5 +1,5 @@
 import createCache from "@emotion/cache";
-import { serializeStyles } from "@emotion/serialize";
+import { serializeStyles, Interpolation } from "@emotion/serialize";
 import {
   EmotionCache,
   getRegisteredStyles,
@@ -21,17 +21,19 @@ export const useEmotion = <T = Record<string, any>>() => {
   // let rules = "";
   let serializedHashes = "";
 
-  let css = (...args: Array<any>) => {
+  let css = <P>(props: P, func: (props: P) => Interpolation) => {
     if (hasRendered && process.env.NODE_ENV !== "production") {
       throw new Error("css can only be used during render");
     }
-    let serialized = serializeStyles(args, context.registered);
+    let serialized = serializeStyles(
+      [].concat(func(props)),
+      context.registered,
+      props
+    );
     if (isBrowser) {
-      let a = insertStyles(context, serialized, false);
-
-      console.log({ rules: a });
+      insertStyles(context, serialized, true);
     } else {
-      let res = insertStyles(context, serialized, false);
+      let res = insertStyles(context, serialized, true);
       if (res !== undefined) {
         rules += res;
       }
