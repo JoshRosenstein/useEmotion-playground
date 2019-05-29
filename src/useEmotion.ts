@@ -55,6 +55,6 @@ export const useEmotion = <T = Record<string, any>>() => {
     css,
     cx,
     theme,
-    withSSr: createWithSSr(context, serializedHashes, rules)
+    withSSr: createWithSSr(context, serializedHashes.substring(1), rules)
   };
 };

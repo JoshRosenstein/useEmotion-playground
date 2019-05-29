@@ -5,6 +5,7 @@ import { useEmotion as useEmotion2 } from "./useEmotionFN";
 import { ThemeContext } from "./Context";
 import { renderToString } from "react-dom/server";
 import randomColor from "randomcolor";
+import styled from "./styled";
 
 import "./styles.css";
 
@@ -24,6 +25,13 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => (
     <>{children}</>
   </ThemeContext.Provider>
 );
+
+const StyledDiv = styled("div")({
+  color: "red",
+  borderColor: randomColor(),
+  borderStyle: "solid",
+  borderWidth: "2px"
+});
 
 const BaseHooks = ({ styles }: { styles: React.CSSProperties }) => {
   const { css, cx, theme, withSSr } = useEmotion();
@@ -74,6 +82,7 @@ function App() {
 
         <BaseHooks2 styles={{ backgroundColor: "blue" }} />
       </div>
+      <StyledDiv> Styled Div</StyledDiv>
     </ThemeProvider>
   );
 }
